@@ -1,0 +1,248 @@
+{
+ "doc_type": "controls",
+ "document": "Cybersecurity Control Catalogue",
+ "version": "1.0",
+ "review_date": "2026-06-30",
+ "entries": [
+  {
+   "id": "CR-012",
+   "title": "Signed firmware images",
+   "requirement": "The TCU shall install only firmware images carrying a valid signature from the OEM signing authority and shall verify the signature before writing the image.",
+   "cybersecurity_goal": "Ensure integrity of firmware installed on the TCU.",
+   "test_ids": [
+    "TC-OTA-004"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-015",
+   "title": "Mutual TLS for backend communication",
+   "requirement": "The TCU and the backend shall authenticate each other with X.509 certificates using TLS 1.2 or higher with approved cipher suites.",
+   "cybersecurity_goal": "Ensure authenticity of the backend and the TCU.",
+   "test_ids": [
+    "TC-OTA-007"
+   ],
+   "interface": "BACKEND"
+  },
+  {
+   "id": "CR-016",
+   "title": "Signed update manifest with pinned trust anchor",
+   "requirement": "The TCU shall verify the update manifest signature against a trust anchor stored in the HSM and shall reject manifests that fail verification.",
+   "cybersecurity_goal": "Ensure authenticity and integrity of update metadata.",
+   "test_ids": [
+    "TC-OTA-008"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-017",
+   "title": "Secure boot verification before activation",
+   "requirement": "The TCU shall verify the bootloader and application image with the HSM-held root key at every boot and before activating a new partition.",
+   "cybersecurity_goal": "Ensure only authorised code executes on the TCU.",
+   "test_ids": [
+    "TC-BOOT-001"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-018",
+   "title": "Manifest freshness and expiry",
+   "requirement": "The TCU shall reject manifests that are expired or that carry a version counter lower than the stored counter.",
+   "cybersecurity_goal": "Prevent replay and freeze attacks on the update process.",
+   "test_ids": [
+    "TC-OTA-010"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-019",
+   "title": "Anti-rollback protection",
+   "requirement": "The TCU shall maintain a monotonic version counter in protected storage and shall reject images with a lower security version.",
+   "cybersecurity_goal": "Prevent installation of older vulnerable firmware.",
+   "test_ids": [
+    "TC-OTA-009"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-020",
+   "title": "Resilient update process",
+   "requirement": "The OTA client shall use an A/B partition scheme, shall resume interrupted downloads, and shall rate-limit retries to the backend.",
+   "cybersecurity_goal": "Maintain availability of the TCU during update attacks and failures.",
+   "test_ids": [
+    "TC-OTA-011"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-021",
+   "title": "HSM-protected signing environment",
+   "requirement": "The backend shall sign update artefacts only inside an HSM with role separation and dual control for signing key use.",
+   "cybersecurity_goal": "Protect the update-signing key from compromise.",
+   "test_ids": [
+    "TC-OTA-012"
+   ],
+   "interface": "OTA"
+  },
+  {
+   "id": "CR-023",
+   "title": "UDS security access with strong authentication",
+   "requirement": "The TCU shall grant privileged diagnostic sessions only after challenge-response authentication with non-reusable seeds and a lockout after repeated failures.",
+   "cybersecurity_goal": "Prevent unauthorised diagnostic sessions.",
+   "test_ids": [
+    "TC-DIA-002"
+   ],
+   "interface": "DIAG"
+  },
+  {
+   "id": "CR-024",
+   "title": "Diagnostic service restrictions",
+   "requirement": "The TCU shall restrict programming and security-relevant diagnostic services to authenticated sessions and shall end sessions after a timeout.",
+   "cybersecurity_goal": "Limit what a diagnostic session can do.",
+   "test_ids": [
+    "TC-DIA-003"
+   ],
+   "interface": "DIAG"
+  },
+  {
+   "id": "CR-025",
+   "title": "Access control per data identifier",
+   "requirement": "The TCU shall enforce a minimum session level for each diagnostic data identifier and shall not expose personal data by identifier.",
+   "cybersecurity_goal": "Protect confidentiality of data read through diagnostics.",
+   "test_ids": [
+    "TC-DIA-004"
+   ],
+   "interface": "DIAG"
+  },
+  {
+   "id": "CR-026",
+   "title": "Diagnostic gateway filtering and rate limiting",
+   "requirement": "The diagnostic gateway shall validate frame format and limit request rates per source.",
+   "cybersecurity_goal": "Maintain availability of the diagnostic stack.",
+   "test_ids": [
+    "TC-DIA-005"
+   ],
+   "interface": "DIAG"
+  },
+  {
+   "id": "CR-027",
+   "title": "Message authentication for CAN",
+   "requirement": "The TCU shall authenticate safety-relevant and command CAN messages using SecOC with a MAC and shall discard messages that fail verification.",
+   "cybersecurity_goal": "Ensure authenticity of CAN signals.",
+   "test_ids": [
+    "TC-CAN-005"
+   ],
+   "interface": "CAN"
+  },
+  {
+   "id": "CR-028",
+   "title": "Freshness values for authenticated messages",
+   "requirement": "Authenticated CAN messages shall carry a freshness value and the receiver shall discard messages with stale freshness.",
+   "cybersecurity_goal": "Prevent replay of CAN messages.",
+   "test_ids": [
+    "TC-CAN-006"
+   ],
+   "interface": "CAN"
+  },
+  {
+   "id": "CR-029",
+   "title": "Gateway filtering, rate limiting and intrusion detection",
+   "requirement": "The gateway shall forward only allow-listed message identifiers between domains, limit rates per identifier, and report violations to the intrusion detection function.",
+   "cybersecurity_goal": "Contain bus attacks and maintain availability of CAN signals.",
+   "test_ids": [
+    "TC-CAN-007"
+   ],
+   "interface": "CAN"
+  },
+  {
+   "id": "CR-030",
+   "title": "Domain segregation with allow-list routing",
+   "requirement": "Network domains shall be segregated and inter-domain routing shall be limited to explicitly approved flows.",
+   "cybersecurity_goal": "Prevent lateral movement between vehicle domains.",
+   "test_ids": [
+    "TC-CAN-008"
+   ],
+   "interface": "CAN"
+  },
+  {
+   "id": "CR-031",
+   "title": "HSM key storage",
+   "requirement": "Private keys and root keys shall be generated and stored in the HSM and shall not be exportable in clear text.",
+   "cybersecurity_goal": "Protect confidentiality of cryptographic keys.",
+   "test_ids": [
+    "TC-KEY-001"
+   ],
+   "interface": "HW"
+  },
+  {
+   "id": "CR-032",
+   "title": "Port authentication on automotive Ethernet",
+   "requirement": "The Ethernet switch shall allow only authenticated devices on a port using IEEE 802.1X or equivalent.",
+   "cybersecurity_goal": "Prevent rogue devices on the vehicle Ethernet.",
+   "test_ids": [
+    "TC-ETH-001"
+   ],
+   "interface": "ETH"
+  },
+  {
+   "id": "CR-033",
+   "title": "SOME/IP service authentication",
+   "requirement": "SOME/IP service offers and subscriptions shall be authenticated and authorised.",
+   "cybersecurity_goal": "Ensure authenticity of Ethernet services.",
+   "test_ids": [
+    "TC-ETH-002"
+   ],
+   "interface": "ETH"
+  },
+  {
+   "id": "CR-034",
+   "title": "Encryption of inter-domain Ethernet traffic",
+   "requirement": "Inter-domain Ethernet traffic carrying personal or sensitive data shall be protected with MACsec or TLS.",
+   "cybersecurity_goal": "Protect confidentiality of Ethernet service data.",
+   "test_ids": [
+    "TC-ETH-003"
+   ],
+   "interface": "ETH"
+  },
+  {
+   "id": "CR-035",
+   "title": "Secure switch configuration",
+   "requirement": "Switch configuration shall disable unused ports and native VLAN trunking, and shall be integrity protected.",
+   "cybersecurity_goal": "Prevent VLAN hopping and misconfiguration.",
+   "test_ids": [
+    "TC-ETH-004"
+   ],
+   "interface": "ETH"
+  },
+  {
+   "id": "CR-036",
+   "title": "Encryption and minimisation of telematics data",
+   "requirement": "Telematics data shall be encrypted in transit and at rest, limited to the purposes approved by data protection, and access to it shall be logged.",
+   "cybersecurity_goal": "Protect confidentiality of personal telematics data.",
+   "test_ids": [
+    "TC-BCK-001"
+   ],
+   "interface": "BACKEND"
+  },
+  {
+   "id": "CR-037",
+   "title": "Authorised and signed remote commands",
+   "requirement": "Remote commands shall be signed by the backend, bound to a session and a timestamp, and checked against authorisation rules before execution.",
+   "cybersecurity_goal": "Prevent forged or replayed remote commands.",
+   "test_ids": [
+    "TC-BCK-002"
+   ],
+   "interface": "BACKEND"
+  },
+  {
+   "id": "CR-038",
+   "title": "Debug interface lock-down",
+   "requirement": "Production devices shall have JTAG and UART debug access disabled or protected by authenticated unlock.",
+   "cybersecurity_goal": "Prevent firmware and key extraction through debug ports.",
+   "test_ids": [
+    "TC-HW-001"
+   ],
+   "interface": "HW"
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+asset_id,name,tag,type,interface,properties,description,owner,version,review_date
+A-01,TCU firmware,tcu_firmware,Software,OTA,I;A,Bootloader and application image running on the TCU application processor.,Platform SW,v2.4,2026-06-30
+A-02,OTA package,ota_package,Data,OTA,C;I,Signed update package downloaded by the OTA client and installed into the inactive partition.,OTA team,v2.4,2026-06-30
+A-03,Key material,key_material,Cryptographic key,HW,C;I,Device private key and firmware verification root key stored in the HSM.,Security,v1.1,2026-06-30
+A-04,CAN signals,can_signals,Signal,CAN,I;A,Safety-relevant and body-control signals on Powertrain CAN and Body CAN such as speed torque request and door lock.,Network team,v3.0,2026-06-30
+A-05,Diagnostic access (OBD-II port),diag_access,Interface,DIAG,I;A;C,UDS over CAN and DoIP diagnostic sessions reachable through the OBD-II connector.,Diagnostics team,v1.7,2026-06-30
+A-06,Backend link,backend_link,Communication channel,BACKEND,C;I;A,TLS connection between the TCU modem and the OEM cloud backend used for telematics remote commands and OTA control.,Connectivity,v2.0,2026-06-30
+A-07,Ethernet service data (SOME/IP),eth_services,Data,ETH,C;I;A,Service-oriented data exchanged with the head unit and ADAS controller over automotive Ethernet.,Network team,v1.3,2026-06-30
+A-08,Telematics data (location and trip),telematics_data,Personal data,BACKEND,C;P,Location history trip data and diagnostic trouble codes uploaded to the backend.,Data protection,v1.0,2026-06-30
+A-09,Update manifest,update_manifest,Data,OTA,I,Manifest with target version version counter and package hash used to authorise an update.,OTA team,v2.4,2026-06-30
+A-10,Security event logs,event_logs,Data,HW,I;A,Audit and security event records kept by the TCU.,Security,v1.0,2026-06-30

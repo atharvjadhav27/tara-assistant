@@ -1,0 +1,79 @@
+{
+ "doc_type": "prior_tara",
+ "document": "Prior TARA TCU-Gen1",
+ "version": "1.0",
+ "review_date": "2026-03-15",
+ "entries": [
+  {
+   "id": "TL-OTA-07",
+   "title": "Rollback to vulnerable version",
+   "description": "Downgrade attack reinstalls firmware with a known flaw.",
+   "interface": "OTA",
+   "asset_tag": "tcu_firmware",
+   "stride": "Tampering",
+   "attack_vector": "Attacker presents an older, validly signed package or manifest so the TCU installs a version with known vulnerabilities.",
+   "damage_scenario": "Known vulnerability is re-exposed and exploited.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Older signed images are often obtainable; installation succeeds if no version counter is enforced.",
+   "controls": [
+    "CR-019"
+   ],
+   "source_doc": "Prior TARA TCU-Gen1",
+   "location": "s.4.2",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "TCU-Gen1"
+  },
+  {
+   "id": "TL-CAN-04",
+   "title": "Pivot from compromised TCU to Powertrain CAN",
+   "description": "A compromised TCU application forwards malicious frames to Powertrain CAN.",
+   "interface": "CAN",
+   "asset_tag": "can_signals",
+   "stride": "Elevation of privilege",
+   "attack_vector": "Attacker with code execution on the TCU abuses gateway routing to reach safety-relevant buses.",
+   "damage_scenario": "Attack extends from the connected ECU to powertrain functions.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Needs a prior TCU compromise and gateway knowledge.",
+   "controls": [
+    "CR-029",
+    "CR-030"
+   ],
+   "source_doc": "Prior TARA TCU-Gen1",
+   "location": "s.5.1",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "TCU-Gen1"
+  }
+ ]
+}

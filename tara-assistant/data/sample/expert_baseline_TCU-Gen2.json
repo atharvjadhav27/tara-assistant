@@ -1,0 +1,40 @@
+{
+ "project": "TCU-Gen2",
+ "note": "Illustrative expert baseline for the SAMPLE data; replace with a real expert review.",
+ "assets": [
+  "A-01",
+  "A-02",
+  "A-03",
+  "A-04",
+  "A-05",
+  "A-06",
+  "A-07",
+  "A-08",
+  "A-09"
+ ],
+ "threats_per_asset": {
+  "A-02": [
+   "TL-OTA-02",
+   "TL-OTA-03"
+  ],
+  "A-06": [
+   "TL-OTA-01",
+   "TL-BCK-03"
+  ],
+  "A-01": [
+   "TL-OTA-07",
+   "TL-DIA-02"
+  ],
+  "A-05": [
+   "TL-DIA-01",
+   "TL-DIA-04"
+  ],
+  "A-04": [
+   "TL-CAN-01",
+   "TL-CAN-02"
+  ],
+  "A-03": [
+   "TL-KEY-01"
+  ]
+ }
+}

@@ -1,0 +1,774 @@
+{
+ "doc_type": "threat_library",
+ "document": "Threat Library v1.2",
+ "version": "1.2",
+ "review_date": "2026-06-30",
+ "entries": [
+  {
+   "id": "TL-OTA-01",
+   "title": "Spoofed update server",
+   "description": "Fake backend delivers a malicious update to the TCU.",
+   "interface": "OTA",
+   "asset_tag": "backend_link",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker impersonates the OEM update server (DNS or rogue base-station redirection) and serves a manifest and package.",
+   "damage_scenario": "Malicious firmware is installed, giving control of the TCU and gateway functions.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Requires redirecting cellular traffic and some knowledge of the update protocol; impact is severe because the TCU bridges to vehicle networks.",
+   "controls": [
+    "CR-015",
+    "CR-016"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.12",
+   "assumptions": [
+    "TLS server certificate validation is the only server authentication in the baseline design."
+   ],
+   "alternatives": [
+    "Accept risk only if manifest signatures are verified independently of TLS (see CR-016)."
+   ],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-OTA-02",
+   "title": "Man-in-the-middle on update download",
+   "description": "Update traffic is intercepted and modified between the backend and the TCU.",
+   "interface": "OTA",
+   "asset_tag": "ota_package",
+   "stride": "Tampering",
+   "attack_vector": "Attacker operates a rogue cellular base station or compromised network element and alters or replays the package in transit.",
+   "damage_scenario": "Tampered or outdated package reaches the OTA client; availability of updates degraded.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Needs specialised radio equipment and expertise, which lowers feasibility compared with simple spoofing.",
+   "controls": [
+    "CR-015",
+    "CR-012"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.13",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-OTA-03",
+   "title": "Tampered OTA update package",
+   "description": "Attacker modifies the firmware image in transit or at the backend.",
+   "interface": "OTA",
+   "asset_tag": "ota_package",
+   "stride": "Tampering",
+   "attack_vector": "Firmware image is altered in the update pipeline, in transit, or in storage before the OTA client verifies it.",
+   "damage_scenario": "Unauthorised code executes on the TCU with access to vehicle network gateways.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Pipeline access or transit interception is plausible for a capable attacker; integrity protection must not depend on the channel alone.",
+   "controls": [
+    "CR-012",
+    "CR-017"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.14",
+   "assumptions": [
+    "The package is verified on the TCU before being written to the inactive partition."
+   ],
+   "alternatives": [
+    "Add a second signature check at activation (secure boot) if verification happens only at download time."
+   ],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-OTA-04",
+   "title": "Manipulated update manifest",
+   "description": "Manifest metadata (version, hash, expiry) is altered to force a freeze or mix-and-match attack.",
+   "interface": "OTA",
+   "asset_tag": "update_manifest",
+   "stride": "Tampering",
+   "attack_vector": "Attacker alters or replays manifest fields so that incompatible or stale components are installed or updates are withheld.",
+   "damage_scenario": "TCU stays on vulnerable firmware or ends in an inconsistent software state.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Needs protocol knowledge and a position on the update path; effect is limited unless combined with other attacks.",
+   "controls": [
+    "CR-016",
+    "CR-018"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.15",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-OTA-05",
+   "title": "Denial of update service",
+   "description": "Updates are blocked or repeatedly interrupted so that fixes cannot be delivered.",
+   "interface": "OTA",
+   "asset_tag": "backend_link",
+   "stride": "Denial of service",
+   "attack_vector": "Attacker floods the update endpoint or interrupts the cellular link during download or installation.",
+   "damage_scenario": "Vehicles remain unpatched or an interrupted installation leaves the TCU unavailable.",
+   "impact": {
+    "safety": "Negligible",
+    "financial": "Moderate",
+    "operational": "Moderate",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 week",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Easy",
+    "equipment": "Standard"
+   },
+   "rationale": "Jamming and flooding need little expertise; impact is limited to availability of the update function.",
+   "controls": [
+    "CR-020"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.16",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-OTA-06",
+   "title": "Compromise of the update-signing key",
+   "description": "Backend signing key is stolen and used to sign malicious packages.",
+   "interface": "OTA",
+   "asset_tag": "key_material",
+   "stride": "Elevation of privilege",
+   "attack_vector": "Attacker breaches the backend signing environment or insider misuses the signing key.",
+   "damage_scenario": "Fleet-wide malicious update with valid signatures.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Severe",
+    "operational": "Severe",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=6 months",
+    "expertise": "Expert",
+    "knowledge": "Confidential",
+    "window": "Difficult",
+    "equipment": "Specialized"
+   },
+   "rationale": "Requires deep access to a protected signing environment; feasibility is very low but impact is fleet-wide.",
+   "controls": [
+    "CR-021",
+    "CR-031"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.17",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-DIA-01",
+   "title": "Unauthorized diagnostic session",
+   "description": "Attacker opens a privileged diagnostic session through the OBD-II port.",
+   "interface": "DIAG",
+   "asset_tag": "diag_access",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker connects a tester to the OBD-II connector and brute-forces or bypasses UDS security access.",
+   "damage_scenario": "Privileged diagnostic services become available, enabling data read-out or reprogramming.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Moderate"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Physical access is needed but OBD-II is widely reachable; weak seed-key schemes lower the effort.",
+   "controls": [
+    "CR-023",
+    "CR-024"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.21",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-DIA-02",
+   "title": "Unauthorized firmware flashing via UDS",
+   "description": "UDS download services are used to write attacker firmware.",
+   "interface": "DIAG",
+   "asset_tag": "tcu_firmware",
+   "stride": "Tampering",
+   "attack_vector": "RequestDownload and TransferData services are invoked after a weak or bypassed security access.",
+   "damage_scenario": "Attacker firmware runs on the TCU.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Secure boot raises the effort significantly, so feasibility is rated low.",
+   "controls": [
+    "CR-023",
+    "CR-017",
+    "CR-024"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.22",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-DIA-03",
+   "title": "Sensitive data read via diagnostic identifiers",
+   "description": "Personal or secret data is read out by data identifier.",
+   "interface": "DIAG",
+   "asset_tag": "telematics_data",
+   "stride": "Information disclosure",
+   "attack_vector": "Attacker reads location history, VIN-linked data or configuration values through ReadDataByIdentifier.",
+   "damage_scenario": "Privacy breach and exposure of configuration useful for later attacks.",
+   "impact": {
+    "safety": "Negligible",
+    "financial": "Major",
+    "operational": "Moderate",
+    "privacy": "Major"
+   },
+   "feasibility": {
+    "time": "<=1 week",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Easy",
+    "equipment": "Standard"
+   },
+   "rationale": "Low effort when identifiers are not access-controlled per session level.",
+   "controls": [
+    "CR-025",
+    "CR-023"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.23",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-DIA-04",
+   "title": "Diagnostic interface fuzzing and denial of service",
+   "description": "Malformed diagnostic requests crash or lock the diagnostic stack.",
+   "interface": "DIAG",
+   "asset_tag": "diag_access",
+   "stride": "Denial of service",
+   "attack_vector": "Attacker sends malformed UDS or DoIP frames at high rate through the OBD-II connector.",
+   "damage_scenario": "Diagnostic stack or TCU services become unavailable.",
+   "impact": {
+    "safety": "Negligible",
+    "financial": "Moderate",
+    "operational": "Moderate",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 week",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Easy",
+    "equipment": "Standard"
+   },
+   "rationale": "Fuzzing tools are public and need little expertise.",
+   "controls": [
+    "CR-026"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.24",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-CAN-01",
+   "title": "CAN message injection",
+   "description": "Forged CAN frames are injected to manipulate vehicle functions.",
+   "interface": "CAN",
+   "asset_tag": "can_signals",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker with bus access (directly or via a compromised node) injects frames using valid identifiers.",
+   "damage_scenario": "Unintended vehicle behaviour such as false speed, torque or door-lock states.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Unauthenticated frames are accepted by receivers; bus access requires a foothold.",
+   "controls": [
+    "CR-027"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.31",
+   "assumptions": [
+    "Body CAN frames carry no authentication in the current design."
+   ],
+   "alternatives": [
+    "Isolate Body CAN by gateway filtering if message authentication cannot be added."
+   ],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-CAN-02",
+   "title": "Replay of CAN messages",
+   "description": "Previously recorded valid CAN frames are replayed.",
+   "interface": "CAN",
+   "asset_tag": "can_signals",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker records legitimate frames and retransmits them at a chosen time.",
+   "damage_scenario": "Stale commands (for example remote lock) are accepted as current.",
+   "impact": {
+    "safety": "Moderate",
+    "financial": "Moderate",
+    "operational": "Moderate",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 week",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Easy",
+    "equipment": "Standard"
+   },
+   "rationale": "Recording and replay tools are simple; success depends on the lack of freshness values.",
+   "controls": [
+    "CR-027",
+    "CR-028"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.32",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-CAN-03",
+   "title": "CAN bus flooding",
+   "description": "High-priority frames saturate the bus.",
+   "interface": "CAN",
+   "asset_tag": "can_signals",
+   "stride": "Denial of service",
+   "attack_vector": "Attacker transmits frames with low identifiers continuously, starving legitimate traffic.",
+   "damage_scenario": "Loss of cyclic signals and degraded functions.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 week",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Easy",
+    "equipment": "Standard"
+   },
+   "rationale": "Trivial to execute once bus access is gained.",
+   "controls": [
+    "CR-029"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.33",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-ETH-01",
+   "title": "Rogue device or spoofed SOME/IP service",
+   "description": "A rogue node offers or consumes SOME/IP services.",
+   "interface": "ETH",
+   "asset_tag": "eth_services",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker connects a device to the Ethernet network or compromises a node and announces forged service offers.",
+   "damage_scenario": "Malicious data reaches consumers such as the head unit or ADAS controller.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Without port authentication any connected device can join the VLAN.",
+   "controls": [
+    "CR-032",
+    "CR-033"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.41",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-ETH-02",
+   "title": "Eavesdropping on inter-domain Ethernet traffic",
+   "description": "Unencrypted service traffic is captured.",
+   "interface": "ETH",
+   "asset_tag": "eth_services",
+   "stride": "Information disclosure",
+   "attack_vector": "Attacker taps the link or mirrors a switch port and records SOME/IP payloads such as location data.",
+   "damage_scenario": "Disclosure of location and state information.",
+   "impact": {
+    "safety": "Negligible",
+    "financial": "Moderate",
+    "operational": "Negligible",
+    "privacy": "Moderate"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Requires physical or switch access; consequence limited to confidentiality.",
+   "controls": [
+    "CR-034"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.42",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-ETH-03",
+   "title": "VLAN hopping or switch misconfiguration",
+   "description": "Traffic crosses VLAN boundaries.",
+   "interface": "ETH",
+   "asset_tag": "eth_services",
+   "stride": "Elevation of privilege",
+   "attack_vector": "Attacker exploits double tagging or a misconfigured trunk to reach protected segments.",
+   "damage_scenario": "Access to segregated domains.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Moderate",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Requires a foothold and knowledge of switch configuration.",
+   "controls": [
+    "CR-035",
+    "CR-030"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.43",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-BCK-01",
+   "title": "Theft of device credentials for backend access",
+   "description": "Device certificate and key are copied and reused.",
+   "interface": "BACKEND",
+   "asset_tag": "backend_link",
+   "stride": "Spoofing",
+   "attack_vector": "Credentials are extracted from storage or memory and used to impersonate the device towards the backend.",
+   "damage_scenario": "Impersonation of vehicles, fraudulent data upload and remote command abuse.",
+   "impact": {
+    "safety": "Moderate",
+    "financial": "Major",
+    "operational": "Moderate",
+    "privacy": "Moderate"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Needs access to credential storage; HSM-backed storage raises the effort.",
+   "controls": [
+    "CR-031",
+    "CR-015"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.51",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-BCK-02",
+   "title": "Exposure of telematics data",
+   "description": "Location and trip data is exposed in transit or at rest.",
+   "interface": "BACKEND",
+   "asset_tag": "telematics_data",
+   "stride": "Information disclosure",
+   "attack_vector": "Data is intercepted, or backend access control is bypassed to read stored telematics data.",
+   "damage_scenario": "Privacy breach affecting vehicle owners.",
+   "impact": {
+    "safety": "Negligible",
+    "financial": "Major",
+    "operational": "Moderate",
+    "privacy": "Major"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Personal data is a high-value target; protection depends on both channel and backend controls.",
+   "controls": [
+    "CR-036"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.52",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-BCK-03",
+   "title": "Forged remote command",
+   "description": "A remote lock or climate command is injected into the TCU command channel.",
+   "interface": "BACKEND",
+   "asset_tag": "backend_link",
+   "stride": "Spoofing",
+   "attack_vector": "Attacker hijacks a backend session or replays a command message.",
+   "damage_scenario": "Unauthorised vehicle access (unlocking) or unsafe activation.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Moderate"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Needs backend session compromise or credential theft.",
+   "controls": [
+    "CR-037",
+    "CR-015"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.53",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-KEY-01",
+   "title": "Key material extraction",
+   "description": "Device keys are extracted from the hardware.",
+   "interface": "HW",
+   "asset_tag": "key_material",
+   "stride": "Information disclosure",
+   "attack_vector": "Attacker with physical access uses probing, fault injection or debug access to read secrets from the device.",
+   "damage_scenario": "Cloned device identity and ability to forge signed data.",
+   "impact": {
+    "safety": "Severe",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Expert",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Requires specialised equipment and expertise; HSM usage raises effort.",
+   "controls": [
+    "CR-031",
+    "CR-038"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.61",
+   "assumptions": [],
+   "alternatives": [],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  },
+  {
+   "id": "TL-KEY-02",
+   "title": "Debug interface abuse (JTAG / UART)",
+   "description": "Debug ports are used to dump or modify firmware.",
+   "interface": "HW",
+   "asset_tag": "tcu_firmware",
+   "stride": "Information disclosure",
+   "attack_vector": "Attacker connects to an enabled JTAG or UART port and reads memory or halts the processor.",
+   "damage_scenario": "Firmware disclosure and bypass of software protections.",
+   "impact": {
+    "safety": "Major",
+    "financial": "Major",
+    "operational": "Major",
+    "privacy": "Negligible"
+   },
+   "feasibility": {
+    "time": "<=1 month",
+    "expertise": "Proficient",
+    "knowledge": "Restricted",
+    "window": "Moderate",
+    "equipment": "Specialized"
+   },
+   "rationale": "Debug ports are well known; production lock-down determines feasibility.",
+   "controls": [
+    "CR-038"
+   ],
+   "source_doc": "Threat Library v1.2",
+   "location": "p.62",
+   "assumptions": [
+    "Debug ports are open on development hardware; production lock-down is still under review."
+   ],
+   "alternatives": [
+    "Permanently disable debug in production fuses."
+   ],
+   "owner": "Product Cybersecurity",
+   "review_date": "2026-06-30",
+   "approved": true,
+   "version": "1.2"
+  }
+ ]
+}

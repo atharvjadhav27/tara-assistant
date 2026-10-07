@@ -1,0 +1,6 @@
+data/runtime
+.git
+__pycache__
+*.pyc
+tests
+docs

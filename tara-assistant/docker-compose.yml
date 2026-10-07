@@ -1,0 +1,30 @@
+# Private deployment: the API and the LLM sit on an internal network with no route to the internet.
+# Only the Streamlit UI is published (bind to localhost; put a reverse proxy / SSO in front for shared use).
+services:
+  api:
+    build: .
+    environment:
+      TARA_LLM_BASE_URL: http://ollama:11434
+      TARA_LLM_MODEL: ${TARA_LLM_MODEL:-llama3.1:8b}
+    volumes: [tara-data:/data]
+    networks: [backend]
+  ui:
+    build: .
+    command: ["streamlit", "run", "ui/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    environment:
+      TARA_API_URL: http://api:8000
+    ports: ["127.0.0.1:8501:8501"]
+    depends_on: [api]
+    networks: [backend, frontend]
+  ollama:            # optional private LLM:  docker compose --profile llm up
+    image: ollama/ollama:latest
+    profiles: [llm]
+    volumes: [ollama-models:/root/.ollama]
+    networks: [backend]
+volumes:
+  tara-data:
+  ollama-models:
+networks:
+  backend:
+    internal: true   # no external connectivity
+  frontend: {}

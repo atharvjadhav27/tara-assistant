@@ -1,0 +1,2 @@
+# Optional: BGE embeddings (the model from the report). Needs the model files available locally.
+sentence-transformers>=3.0

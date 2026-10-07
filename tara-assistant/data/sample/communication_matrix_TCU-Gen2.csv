@@ -1,0 +1,16 @@
+message,msg_id,bus,protocol,sender,receiver,cycle_ms,security,signals,interface
+VehicleSpeed,0x1A0,Powertrain CAN,CAN,ESC,TCU,20,SecOC,vehicle_speed,CAN
+TorqueRequest,0x1B4,Powertrain CAN,CAN,TCU,ECM,10,SecOC,torque_request,CAN
+GatewayRouting,0x2C0,Powertrain CAN,CAN,TCU,BCM,100,SecOC,routing_table_version,CAN
+DoorLockStatus,0x3D2,Body CAN,CAN,BCM,TCU,100,none,door_lock_state,CAN
+RemoteLockCmd,0x3D8,Body CAN,CAN,TCU,BCM,event,none,remote_lock_command,CAN
+InfotainmentStatus,0x4F0,Body CAN,CAN,HU,TCU,200,none,hu_state,CAN
+SOMEIP_LocationService,svc-0x0101,Ethernet 100BASE-T1,SOME/IP,TCU,HU,1000,none,location_data,ETH
+SOMEIP_ADAS_Request,svc-0x0207,Ethernet 100BASE-T1,SOME/IP,ADAS,TCU,100,none,adas_state_request,ETH
+UDS_Request,0x7E0,OBD-II CAN,UDS on CAN,Tester,TCU,event,seed-key,session_control;security_access;read_did;request_download,DIAG
+UDS_Response,0x7E8,OBD-II CAN,UDS on CAN,TCU,Tester,event,seed-key,diagnostic_response,DIAG
+DoIP_Activation,doip-0x0005,OBD-II Ethernet,DoIP,Tester,TCU,event,none,routing_activation,DIAG
+OTA_Manifest,https://ota,Cellular,HTTPS/TLS,OTA Server,TCU,event,TLS server-auth,update_manifest;target_version,OTA
+OTA_Package,https://ota,Cellular,HTTPS/TLS,OTA Server,TCU,event,TLS + signed package,firmware_image,OTA
+TelematicsUpload,mqtt://tele,Cellular,MQTT/TLS,TCU,Backend,60000,TLS mutual-auth,location;trip_data;dtc,BACKEND
+RemoteCommand,mqtt://cmd,Cellular,MQTT/TLS,Backend,TCU,event,TLS mutual-auth,remote_lock;remote_climate,BACKEND
